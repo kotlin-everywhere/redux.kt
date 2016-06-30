@@ -13,4 +13,5 @@ class StoreTest {
 
         Assert.assertEquals(store.state, State())
     }
+
 }
