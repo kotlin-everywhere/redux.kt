@@ -1,6 +1,7 @@
 package com.kotlin_everywhere.redux.test
 
 import com.kotlin_everywhere.redux.Store
+import com.kotlin_everywhere.redux.partial
 import org.junit.Assert
 import org.junit.Test
 
@@ -15,19 +16,6 @@ private fun headActionReducer(state: PartialState.Head, action: HeadAction): Par
 private data class PartialState(val head: Head = PartialState.Head(), val tail: Tail = PartialState.Tail()) {
     data class Head(val id: Int = 0)
     data class Tail(val id: Int = 0)
-}
-
-inline fun <T, U, reified V> partial(crossinline getter: (T) -> U, crossinline setter: ((T, U) -> T), crossinline reducer: (U, V) -> U): (T, Any) -> T {
-    return { state, action ->
-        val partialAction = action as? V
-        if (partialAction == null) {
-            state
-        } else {
-            val partialState = getter(state)
-            val newPartialState = reducer(partialState, partialAction)
-            if (partialState === newPartialState) state else setter(state, newPartialState)
-        }
-    }
 }
 
 class ReducerTest {

@@ -22,3 +22,15 @@ class Store<T>(initialState: T, private val reducer: (T, Any) -> T) {
     }
 }
 
+inline fun <T, U, reified V> partial(crossinline getter: (T) -> U, crossinline setter: ((T, U) -> T), crossinline reducer: (U, V) -> U): (T, Any) -> T {
+    return { state, action ->
+        val partialAction = action as? V
+        if (partialAction == null) {
+            state
+        } else {
+            val partialState = getter(state)
+            val newPartialState = reducer(partialState, partialAction)
+            if (partialState === newPartialState) state else setter(state, newPartialState)
+        }
+    }
+}
