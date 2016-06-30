@@ -20,6 +20,10 @@ class Store<T>(initialState: T, private val reducer: (T, Any) -> T) {
             handlers = handlers.filter { it !== handler }.toTypedArray()
         }
     }
+
+    operator fun invoke(action: Any) {
+        dispatch(action)
+    }
 }
 
 inline fun <T, U, reified V> partial(crossinline getter: (T) -> U, crossinline setter: ((T, U) -> T), crossinline reducer: (U, V) -> U): (T, Any) -> T {

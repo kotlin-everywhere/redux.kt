@@ -23,5 +23,8 @@ class DispatchTest {
 
         store.dispatch(UpdateId(2))
         Assert.assertEquals(2, store.state.id)
+
+        store(UpdateId(3))
+        Assert.assertEquals(3, store.state.id)
     }
 }
